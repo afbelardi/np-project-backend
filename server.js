@@ -25,8 +25,8 @@ if (process.env.NODE_ENV !== 'development'){
 }
 app.use(/\.[0-9a-z]+$/i, express.static('public'));
 
-// app.use('/api/nationalpark', require('./controllers/parks'));
-// app.use('/api/notes', require('./controllers/notes'));
+app.use('/api/nationalpark', require('./controllers/parks'));
+app.use('/api/notes', require('./controllers/notes'));
 
 app.listen(PORT, () => {
     console.log(`API Listening on port ${PORT}`);
