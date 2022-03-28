@@ -1,6 +1,7 @@
 const Park = require('../models/Park');
 const express = require('express');
 const parkRouter = express.Router();
+const axios = require('axios');
 
 
 // INDUCES
@@ -43,6 +44,22 @@ parkRouter.get('/', async (req, res) => {
     }
 })
 
+parkRouter.get('/apikey/:park', async (req, res) => {
+    try {
+        const apikey = process.env.PARKS_API_KEY;
+        const stateCode = await req.params.park
+
+        if (!stateCode) {
+            res.send('No state provided')
+        } else {
+            const response = await axios.get(`https://developer.nps.gov/api/v1/parks?stateCode=${stateCode}&api_key=${apikey}`);
+             res.send(response.data);
+        }
+        
+    } catch(error) {
+        console.error(error)
+    }
+})
 
 /*Show */
 
