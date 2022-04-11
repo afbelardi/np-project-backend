@@ -6,6 +6,7 @@ const userRouter = express.Router();
 
 
 
+
 userRouter.post("/register", async (req, res) => {
     const user = req.body;
 
@@ -28,7 +29,8 @@ userRouter.post("/register", async (req, res) => {
         dbUser.save();
 
         res.json({
-            "message": "Success"
+            "message": "Success",
+            user
         })
     }
 });
@@ -60,7 +62,7 @@ userRouter.post("/login", (req, res) => {
                         if (err) return res.json({message: err})
                         return res.json({
                             message: "Success",
-                            token: "Bearer" + token
+                            token: "Bearer " + token
                         })
                     }
                 )

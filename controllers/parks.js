@@ -4,6 +4,7 @@ const parkRouter = express.Router();
 const axios = require('axios');
 
 
+
 // INDUCES
 // Don't need new 
 //Don't need edit
@@ -29,6 +30,8 @@ parkRouter.post('/favorites', async (req, res) =>  {
 
 //READ 
 /* Index*/
+
+
 
 parkRouter.get('/', async (req, res) => {
     try {
