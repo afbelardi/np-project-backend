@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Park = require("./Park");
 
 const userSchema = mongoose.Schema({
     username: {
@@ -16,6 +17,9 @@ const userSchema = mongoose.Schema({
     lastSearch: {
         type: String,
     }, 
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Park'
+    }]
 }, {timestamps: true})
 
 const User = mongoose.model("User", userSchema)

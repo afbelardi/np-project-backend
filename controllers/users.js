@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const userRouter = express.Router();
+const verifyJWT = require('../middleware')
+
 
 
 
@@ -23,7 +25,7 @@ userRouter.post("/register", async (req, res) => {
         const dbUser = new User({
             username: user.username.toLowerCase(),
             email: user.email.toLowerCase(),
-            password: user.password
+            password: user.password,
         })
 
         dbUser.save();
@@ -62,7 +64,7 @@ userRouter.post("/login", (req, res) => {
                         if (err) return res.json({message: err})
                         return res.json({
                             message: "Success",
-                            token: "Bearer " + token
+                            token: token
                         })
                     }
                 )
@@ -76,7 +78,21 @@ userRouter.post("/login", (req, res) => {
 })
 
 
+userRouter.get('/userfavorites', verifyJWT, async(req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1]
 
+        const decodedToken = await jwt.decode(token, process.env.JWT_SECRET)
+        const foundUser = await User.findById(decodedToken.id).populate("favorites")
+    
+        res.json(foundUser.favorites)
+    } catch(error){
+        res
+            .status(400)
+            .json(error)
+    }
+    
+})
 
 
 

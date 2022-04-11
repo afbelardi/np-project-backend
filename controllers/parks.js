@@ -2,18 +2,18 @@ const Park = require('../models/Park');
 const express = require('express');
 const parkRouter = express.Router();
 const axios = require('axios');
+const app = express();
+const verifyJWT = require('../middleware');
 
 
 
-// INDUCES
-// Don't need new 
-//Don't need edit
+
 
 //CREATE READ UPDATE DESTROY
 
 //CREATE
 
-parkRouter.post('/favorites', async (req, res) =>  {
+parkRouter.post('/favorites', verifyJWT, async (req, res) =>  {
     try {
         const newPark = await Park.create(req.body);
 
@@ -32,8 +32,13 @@ parkRouter.post('/favorites', async (req, res) =>  {
 /* Index*/
 
 
+parkRouter.get("/username", verifyJWT, async (req, res) => {
+    res.json({isLoggedIn: true, username: req.user.username})
+})
 
-parkRouter.get('/', async (req, res) => {
+
+
+parkRouter.get('/', verifyJWT, async function(req, res) {
     try {
         const foundParks = await Park.find({})
     
@@ -45,6 +50,7 @@ parkRouter.get('/', async (req, res) => {
             .status(400)
             .json(error)
     }
+    next()
 })
 
 parkRouter.get('/apikey', async (req, res) => {
@@ -138,4 +144,4 @@ parkRouter.put('/:id', async (req, res) => {
     }
 })
 
-module.exports = parkRouter;
+module.exports = parkRouter, verifyJWT;
