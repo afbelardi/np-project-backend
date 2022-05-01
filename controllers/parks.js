@@ -56,7 +56,7 @@ parkRouter.get('/', verifyJWT, async function(req, res) {
 parkRouter.get('/apikey', async (req, res) => {
     try {
         const apikey = process.env.PARKS_API_KEY;
-            const response = await axios.get(`https://developer.nps.gov/api/v1/parks?stateCode=&api_key=${apikey}`);
+            const response = await axios.get(`https://developer.nps.gov/api/v1/parks?stateCode=&limit=200&api_key=${apikey}`);
              res.send(response.data);
         
     } catch(error) {
