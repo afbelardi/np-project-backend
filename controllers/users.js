@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const userRouter = express.Router();
-const verifyJWT = require('../middleware')
+const verifyJWT = require('../middleware/verifyJWT');
 
 
 
@@ -17,7 +17,8 @@ userRouter.post("/register", async (req, res) => {
 
     if (takenEmail || takenUsername) {
         res.json({
-            "message": "Username or email has already been taken"
+            status: 400,
+            message: "Username or email has already been taken"
         })
     } else {
         user.password = await bcrypt.hash(req.body.password, 10)
@@ -30,8 +31,9 @@ userRouter.post("/register", async (req, res) => {
 
         dbUser.save();
 
-        res.json({
-            "message": "Success",
+       res.json({
+            status: 200,
+            message: "Success",
             user
         })
     }
@@ -62,7 +64,8 @@ userRouter.post("/login", (req, res) => {
                     {expiresIn: 86400},
                     (err, token) => {
                         if (err) return res.json({message: err})
-                        return res.json({
+                        res.send({
+                            status: 200,
                             message: "Success",
                             token: token
                         })
@@ -70,6 +73,7 @@ userRouter.post("/login", (req, res) => {
                 )
             } else {
                 return res.json({
+                    status: 400,
                     message: "Invalid Username or Password"
                 })
             }

@@ -3,7 +3,7 @@ const express = require('express');
 const parkRouter = express.Router();
 const axios = require('axios');
 const app = express();
-const verifyJWT = require('../middleware');
+const verifyJWT = require('../middleware/verifyJWT');
 
 
 
