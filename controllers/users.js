@@ -5,6 +5,8 @@ const express = require("express");
 const userRouter = express.Router();
 const verifyJWT = require('../middleware/verifyJWT');
 
+const secret_key = process.env.JWT_SECRET;
+
 
 userRouter.post('/signup', async (req, res, next) => {
     try {
@@ -14,6 +16,26 @@ userRouter.post('/signup', async (req, res, next) => {
         res.status(201).json({message: 'User created successfully'})
     } catch(error) {
         next(error)
+    }
+});
+
+userRouter.post('/login', async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email })
+        if (!user) {
+            res.status(401).json({ message: 'Authentication failed. '});
+            return;
+        }
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            res.status(401).json({ message: 'Authentication failed. '});
+            return;
+        }
+        const token = jwt.sign({ userId: user._id}, secret_key);
+        res.status(200).json({ token });
+    } catch (error) {
+        next(error);
     }
 })
 
