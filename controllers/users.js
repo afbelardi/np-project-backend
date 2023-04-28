@@ -25,7 +25,11 @@ const authenticateToken = (req, res, next) => {
 userRouter.post('/signup', async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
-        const user = new User({ username, email, password});
+        const user = new User({ 
+            username: username.toLowerCase(),
+            email: email.toLowerCase(), 
+            password
+        });
         await user.save();
         res.status(201).json({message: 'User created successfully'})
     } catch(error) {
