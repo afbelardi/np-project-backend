@@ -7,6 +7,20 @@ const verifyJWT = require('../middleware/verifyJWT');
 
 const secret_key = process.env.JWT_SECRET;
 
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]
+    if (!token) return res.status(401).json({ message: 'Unauthorized' });
+
+    jwt.verify(token, secret_key, (error, user) => {
+        if (error) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        req.user = user;
+        next();
+    })
+}
+
 
 userRouter.post('/signup', async (req, res, next) => {
     try {
@@ -33,11 +47,30 @@ userRouter.post('/login', async (req, res, next) => {
             return;
         }
         const token = jwt.sign({ userId: user._id}, secret_key);
-        res.status(200).json({ token });
+        res.status(200).json({ token, user });
     } catch (error) {
         next(error);
     }
-})
+});
+
+
+userRouter.get('/:id', authenticateToken, async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.send(user)
+    } catch (error) {
+        res
+            .status(400)
+            .send(error)
+    }
+});
+
+
+
 
 
 // userRouter.post("/register", async (req, res) => {
