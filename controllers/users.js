@@ -51,7 +51,7 @@ userRouter.post('/login', async (req, res, next) => {
             return;
         }
         const token = jwt.sign({ userId: user._id}, secret_key);
-        res.status(200).json({ token, user });
+        res.status(200).json({ token });
     } catch (error) {
         next(error);
     }
