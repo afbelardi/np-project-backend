@@ -3,7 +3,7 @@ const express = require('express');
 const parkRouter = express.Router();
 const axios = require('axios');
 const app = express();
-const verifyJWT = require('../middleware/verifyJWT');
+
 
 
 
@@ -13,45 +13,45 @@ const verifyJWT = require('../middleware/verifyJWT');
 
 //CREATE
 
-parkRouter.post('/favorites', verifyJWT, async (req, res) =>  {
-    try {
-        const newPark = await Park.create(req.body);
+// parkRouter.post('/favorites', verifyJWT, async (req, res) =>  {
+//     try {
+//         const newPark = await Park.create(req.body);
 
-        res
-        .status(200)
-        .json(newPark)
-    } catch(error) {
-        res
-            .status(400)
-            .json(error)
+//         res
+//         .status(200)
+//         .json(newPark)
+//     } catch(error) {
+//         res
+//             .status(400)
+//             .json(error)
         
-    }
-})
+//     }
+// })
 
 //READ 
 /* Index*/
 
 
-parkRouter.get("/username", verifyJWT, async (req, res) => {
-    res.json({isLoggedIn: true, username: req.user.username})
-})
+// parkRouter.get("/username", verifyJWT, async (req, res) => {
+//     res.json({isLoggedIn: true, username: req.user.username})
+// })
 
 
 
-parkRouter.get('/', verifyJWT, async function(req, res) {
-    try {
-        const foundParks = await Park.find({})
+// parkRouter.get('/', verifyJWT, async function(req, res) {
+//     try {
+//         const foundParks = await Park.find({})
     
-        res
-            .status(200)
-            .json(foundParks)
-    }catch (error) {
-        res
-            .status(400)
-            .json(error)
-    }
-    next()
-})
+//         res
+//             .status(200)
+//             .json(foundParks)
+//     }catch (error) {
+//         res
+//             .status(400)
+//             .json(error)
+//     }
+//     next()
+// })
 
 parkRouter.get('/apikey', async (req, res) => {
     try {
@@ -144,4 +144,4 @@ parkRouter.put('/:id', async (req, res) => {
     }
 })
 
-module.exports = parkRouter, verifyJWT;
+module.exports = parkRouter

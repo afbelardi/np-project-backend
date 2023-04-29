@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const userRouter = express.Router();
-const verifyJWT = require('../middleware/verifyJWT');
+
 
 const secret_key = process.env.JWT_SECRET;
 
