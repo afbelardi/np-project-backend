@@ -61,7 +61,7 @@ userRouter.post('/login', async (req, res, next) => {
 userRouter.get('/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const user = await User.findById(userId);
+        const user = await User.findOne({_id: userId}, { password: 0 });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
