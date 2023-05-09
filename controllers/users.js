@@ -42,12 +42,12 @@ userRouter.post('/login', async (req, res, next) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email })
         if (!user) {
-            res.status(401).json({ message: 'Authentication failed. '});
+            res.status(401).json({ message: 'Email is incorrect. '});
             return;
         }
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            res.status(401).json({ message: 'Authentication failed. '});
+            res.status(401).json({ message: 'Password is incorrect. '});
             return;
         }
         const token = jwt.sign({ userId: user._id}, secret_key);
