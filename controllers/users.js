@@ -62,7 +62,7 @@ userRouter.post('/login', async (req, res, next) => {
 userRouter.get('/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const user = await User.findOne({_id: userId}, { password: 0 });
+        const user = await User.findOne({_id: userId}, { password: 0 }).populate('favorites').exec();
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -75,10 +75,11 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
 });
 
 
-userRouter.post('/:userId/favorites', authenticateToken, async (req, res, next) => {
+userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.params.id;
         const park = new Park(req.body);
+        console.log(park)
         await User.findByIdAndUpdate(userId, {$push: {favorites: park}}, {new: true});
         res.send(park);
     } catch(error) {
@@ -89,97 +90,21 @@ userRouter.post('/:userId/favorites', authenticateToken, async (req, res, next) 
 } )
 
 
-
-
-
-// userRouter.post("/register", async (req, res) => {
-//     const user = req.body;
-
-//     const takenUsername = await User.findOne({ username: user.username });
-//     const takenEmail = await User.findOne({ email: user.email });
-
-//     if (takenEmail || takenUsername) {
-//         res.json({
-//             status: 400,
-//             message: "Username or email has already been taken"
-//         })
-//     } else {
-//         user.password = await bcrypt.hash(req.body.password, 10)
-
-//         const dbUser = new User({
-//             username: user.username.toLowerCase(),
-//             email: user.email.toLowerCase(),
-//             password: user.password,
-//         })
-
-//         dbUser.save();
-
-//        res.json({
-//             status: 200,
-//             message: "Success",
-//             user
-//         })
-//     }
-// });
-
-
-// userRouter.post("/login", (req, res) => {
-//     const userLoggingIn = req.body;
-
-//     User.findOne({username: userLoggingIn.username})
-//     .then(dbUser => {
-//         if (!dbUser) {
-//             return res.json({
-//                 message: "Invalid Username or Password"
-//             })
-//         }
-//         bcrypt.compare(userLoggingIn.password, dbUser.password)
-//         .then(isCorrect => {
-//             if (isCorrect) {
-//                 const payload = {
-//                     id: dbUser._id,
-//                     username: dbUser.username,
-//                     email: dbUser.email
-//                 }
-//                 jwt.sign(
-//                     payload,
-//                     process.env.JWT_SECRET,
-//                     {expiresIn: 86400},
-//                     (err, token) => {
-//                         if (err) return res.json({message: err})
-//                         res.send({
-//                             status: 200,
-//                             message: "Success",
-//                             token: token
-//                         })
-//                     }
-//                 )
-//             } else {
-//                 return res.json({
-//                     status: 400,
-//                     message: "Invalid Username or Password"
-//                 })
-//             }
-//         })
-//     })
-// })
-
-
-// userRouter.get('/userfavorites', verifyJWT, async(req, res) => {
-//     try {
-//         const token = req.headers.authorization.split(' ')[1]
-
-//         const decodedToken = await jwt.decode(token, process.env.JWT_SECRET)
-//         const foundUser = await User.findById(decodedToken.id).populate("favorites")
+userRouter.get('/favorites/:id', authenticateToken, async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const foundUser = await User.findById(userId).populate('favorites')
+        // const token = req.headers.authorization.split(' ')[1]
+        // const decodedToken = await jwt.decode(token, process.env.JWT_SECRET)
+        // const foundUser = await User.findById(decodedToken.id).populate("favorites")
+        res.json(foundUser.favorites)
+    } catch(error){
+        res
+            .status(400)
+            .json(error)
+    }
     
-//         res.json(foundUser.favorites)
-//     } catch(error){
-//         res
-//             .status(400)
-//             .json(error)
-//     }
-    
-// })
+})
 
 
 
