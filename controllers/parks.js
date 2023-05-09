@@ -53,6 +53,17 @@ const app = express();
 //     next()
 // })
 
+parkRouter.get('/park/:id', async (req, res) => {
+    try {
+        const apikey = process.env.PARKS_API_KEY
+        const parkCode = await req.params.id
+        const response = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${apikey}`);
+        res.send(response.data);
+    } catch(error) {
+        console.log(error)
+    }
+});
+
 parkRouter.get('/apikey', async (req, res) => {
     try {
         const apikey = process.env.PARKS_API_KEY;
@@ -64,16 +75,7 @@ parkRouter.get('/apikey', async (req, res) => {
     }
 })
 
-parkRouter.get('/park/:id', async (req, res) => {
-    try {
-        const apikey = process.env.PARKS_API_KEY
-        const parkCode = await req.params.id
-        const response = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${apikey}`);
-        res.send(response.data);
-    } catch(error) {
-        console.log(error)
-    }
-})
+
 
 parkRouter.get('/apikey/:park', async (req, res) => {
     try {
