@@ -64,7 +64,7 @@ parkRouter.get('/apikey', async (req, res) => {
     }
 })
 
-parkRouter.get('/apikey/park/:id', async (req, res) => {
+parkRouter.get('/park/:id', async (req, res) => {
     try {
         const apikey = process.env.PARKS_API_KEY
         const parkCode = await req.params.id
