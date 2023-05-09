@@ -6,10 +6,20 @@ const parkSchema = new Schema({
     fullName: String,
     description: String,
     addresses: String,
+    activities: [{
+        id: String,
+        name: String
+    }],
     directionsInfo: String,
     entranceFees: [{
         cost: String,
         description: String
+    }],
+    phoneNumbers: [{
+        phoneNumber: String
+    }],
+    emailAddresses: [{
+        emailAddress: String
     }],
     images: [{
         url: String,

@@ -2,6 +2,7 @@ const User = require('../models/User');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const express = require("express");
+const Park = require('../models/Park');
 const userRouter = express.Router();
 
 
@@ -51,7 +52,7 @@ userRouter.post('/login', async (req, res, next) => {
             return;
         }
         const token = jwt.sign({ userId: user._id}, secret_key);
-        res.status(200).json({ token });
+        res.status(200).json({ token, user });
     } catch (error) {
         next(error);
     }
@@ -72,6 +73,20 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
             .send(error)
     }
 });
+
+
+userRouter.post('/:userId/favorites', authenticateToken, async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const park = new Park(req.body);
+        await User.findByIdAndUpdate(userId, {$push: {favorites: park}}, {new: true});
+        res.send(park);
+    } catch(error) {
+        res
+            .status(400)
+            .send(error)
+    }
+} )
 
 
 

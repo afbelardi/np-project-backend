@@ -11,7 +11,7 @@ const app = express();
 
 //CREATE READ UPDATE DESTROY
 
-//CREATE
+// CREATE
 
 // parkRouter.post('/favorites', verifyJWT, async (req, res) =>  {
 //     try {
