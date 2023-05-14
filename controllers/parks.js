@@ -82,7 +82,6 @@ parkRouter.get('/apikey/:park', async (req, res) => {
     try {
         const apikey = process.env.PARKS_API_KEY;
         const stateCode = await req.params.park
-
         if (!stateCode) {
             res.send('No state provided')
         } else {
