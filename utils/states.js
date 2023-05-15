@@ -1,4 +1,4 @@
-export function stateToAbbreviation(state) {
+const stateToAbbreviation = (state) => {
     const stateDict = {
         'alabama': 'AL',
         'alaska': 'AK',
@@ -51,5 +51,17 @@ export function stateToAbbreviation(state) {
         'wisconsin': 'WI',
         'wyoming': 'WY'
     }; 
-    return stateDict[state.toLowerCase()] || null;
+
+   const fullState = state.toLowerCase();
+
+   if (fullState in stateDict) {
+    return stateDict[fullState];
+   }
+
+   const abbreviations = Object.values(stateDict);
+   const matchedAbbreviation = abbreviations.find((abbr) => abbr.toLowerCase() === fullState);
+
+   return matchedAbbreviation || null; 
 }
+
+module.exports = stateToAbbreviation

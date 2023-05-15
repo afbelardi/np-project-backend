@@ -3,7 +3,7 @@ const express = require('express');
 const parkRouter = express.Router();
 const axios = require('axios');
 const app = express();
-
+const stateToAbbreviation = require('../utils/states')
 
 
 
@@ -81,7 +81,7 @@ parkRouter.get('/park/:id', async (req, res) => {
 parkRouter.get('/apikey/:park', async (req, res) => {
     try {
         const apikey = process.env.PARKS_API_KEY;
-        const stateCode = await req.params.park
+        const stateCode = stateToAbbreviation(req.params.park);
         if (!stateCode) {
             res.send('No state provided')
         } else {
