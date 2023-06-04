@@ -84,16 +84,17 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
 userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const park = new Park(req.body);
-        console.log(park)
-        await User.findByIdAndUpdate(userId, {$push: {favorites: park}}, {new: true});
+        // const park = new Park(req.body);
+        const parkId = req.body.parkId;
+        console.log(parkId)
+        await User.findByIdAndUpdate(userId, {$push: {favorites: parkId}}, {new: true});
         res.send(park);
     } catch(error) {
         res
             .status(400)
             .send(error)
     }
-} )
+})
 
 
 userRouter.get('/favorites/:id', authenticateToken, async(req, res) => {
