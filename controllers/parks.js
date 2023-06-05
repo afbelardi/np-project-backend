@@ -98,52 +98,52 @@ parkRouter.get('/apikey/:park', async (req, res) => {
 
 /*Show */
 
-parkRouter.get('/:id', async (req, res) => {
-    try {
-        const foundPark = await Park.findById(req.params.id)
-        await foundPark.execPopulate('note')
-        res
-            .status(200)
-            .json(foundPark)
-    }catch (error) {
-        res
-            .status(400)
-            .json(error)
-    }
-})
+// parkRouter.get('/:id', async (req, res) => {
+//     try {
+//         const foundPark = await Park.findById(req.params.id)
+//         await foundPark.execPopulate('note')
+//         res
+//             .status(200)
+//             .json(foundPark)
+//     }catch (error) {
+//         res
+//             .status(400)
+//             .json(error)
+//     }
+// })
 
 
-//DESTROY
+// //DESTROY
 
-parkRouter.delete('/:id', async (req, res) => {
-    try {
-        const foundPark = await Park.findByIdAndDelete(req.params.id)
-        res
-            .status(200)
-            .json(foundPark)
-    }catch (error) {
-        res
-            .status(400)
-            .json(error)
-    }
-})
-
-
+// parkRouter.delete('/:id', async (req, res) => {
+//     try {
+//         const foundPark = await Park.findByIdAndDelete(req.params.id)
+//         res
+//             .status(200)
+//             .json(foundPark)
+//     }catch (error) {
+//         res
+//             .status(400)
+//             .json(error)
+//     }
+// })
 
 
-//UPDATE
 
-parkRouter.put('/:id', async (req, res) => {
-    try {
-        const foundPark = await Park.findByIdAndUpdate(req.params.id, req.body, { new: true } )
-            res    
-        .status(200)
-            .json(foundPark)
-    }catch (error) {
-        res
-            .status(400)
-            .json(error)
-    }
-})
+
+// //UPDATE
+
+// parkRouter.put('/:id', async (req, res) => {
+//     try {
+//         const foundPark = await Park.findByIdAndUpdate(req.params.id, req.body, { new: true } )
+//             res    
+//         .status(200)
+//             .json(foundPark)
+//     }catch (error) {
+//         res
+//             .status(400)
+//             .json(error)
+//     }
+// })
 
 module.exports = parkRouter

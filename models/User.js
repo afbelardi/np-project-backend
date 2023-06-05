@@ -18,10 +18,9 @@ const userSchema = mongoose.Schema({
     lastSearch: {
         type: String,
     }, 
-    // favorites: [{
-    //     type: mongoose.Schema.Types.ObjectId, ref: 'Park'
-    // }]
-    favorites: [String]
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Park'
+    }]
 }, {timestamps: true});
 
 userSchema.pre('save', async function (next) {
