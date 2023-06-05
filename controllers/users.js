@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const Park = require('../models/Park');
+const { default: axios } = require('axios');
 const userRouter = express.Router();
 
 
@@ -84,9 +85,13 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
 userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
-        // const park = new Park(req.body);
-        const parkId = req.body.parkId;
-        console.log(parkId)
+        const parkCode = req.body.parkCode;
+        const apikey = process.env.PARKS_API_KEY
+
+        const parkRes = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${apikey}`);
+        const parkData = parkRes.data;
+        
+        
         await User.findByIdAndUpdate(userId, {$push: {favorites: parkId}}, {new: true});
         res.send(park);
     } catch(error) {
