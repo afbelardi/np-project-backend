@@ -19,7 +19,70 @@ const userSchema = mongoose.Schema({
         type: String,
     }, 
     favorites: [{
-        type: mongoose.Schema.Types.ObjectId, ref: 'Park'
+       parkCode: {type: String, required: true},
+       url: {type: String, required: true},
+       fullName: {type: String, required: true},
+       description: {type: String, required: true},
+       latitude: {type: String, required: true}, 
+       longitude: {type: String, required: true}, 
+       activities: [
+        {
+            name: {type: String, required: true}
+        }
+       ],
+       states: {type: String, required: true},
+       phoneNumbers: [
+        {
+            phoneNumber: {type: String}
+        }
+       ],
+       emailAddresses: [
+        {
+            emailAddress: {type: String, required: true}
+        }
+       ],
+       entranceFees: [
+        {
+            cost: {type: String},
+            description: {type: String},
+            title: {type: String}
+        }
+       ],
+       entrancePasses: [
+        {
+            cost: {type: String},
+            description: {type: String},
+            title: {type: String}
+        }
+       ],
+       directionsInfo: {type: String, required: true},
+       directionsUrl: {type: String, required: true},
+       operatingHours: [
+        {
+            description: {type: String},
+            standardHours: {type: String}
+        },
+       ],
+       addresses: [
+        {
+            postalCode: {type: String},
+            city: {type: String},
+            stateCode: {type: String},
+            line1: {type: String},
+            line2: {type: String}, 
+            line3: {type: String},
+            type: {type: String}
+        }
+       ],
+       images: [
+        {
+            title: {type: String, required: true},
+            caption: {type: String, required: true},
+            url: {type: String, required: true}
+        }
+       ],
+       weatherInfo: {type: String},
+       designation: {type: String, required: true}
     }]
 }, {timestamps: true});
 
