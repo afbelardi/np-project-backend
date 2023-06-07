@@ -60,7 +60,9 @@ const userSchema = mongoose.Schema({
        operatingHours: [
         {
             description: { type: String },
-            standardHours: { type: String }
+            standardHours: { 
+                
+             }
         },
        ],
        addresses: [

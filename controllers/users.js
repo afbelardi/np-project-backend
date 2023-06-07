@@ -85,15 +85,38 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
 userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const parkCode = req.body.parkCode;
+        const parkCode = await req.body.parkCode;
         const apikey = process.env.PARKS_API_KEY
 
         const parkRes = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${apikey}`);
-        const parkData = parkRes.data;
+        const parkData = parkRes.data.data[0];
+       
+     
+        const favoritePark = {
+            parkCode: parkCode,
+            url: parkData.url,
+            fullName: parkData.fullName,
+            description: parkData.description,
+            latitude: parkData.latitude,
+            longitude: parkData.longitude,
+            activities: parkData.activities,
+            states: parkData.states,
+            phoneNumbers: parkData.phoneNumbers,
+            emailAddresses: parkData.emailAddresses,
+            entranceFees: parkData.entranceFees,
+            entrancePasses: parkData.entrancePasses,
+            directionsInfo: parkData.directionsInfo,
+            directionsUrl: parkData.directionsUrl,
+            operatingHours: parkData.operatingHours,
+            addresses: parkData.addresses,
+            images: parkData.images,
+            weatherInfo: parkData.weatherInfo,
+            designation: parkData.designation
+        };
+
         
-        
-        await User.findByIdAndUpdate(userId, {$push: {favorites: parkId}}, {new: true});
-        res.send(park);
+        const updatedUser = await User.findByIdAndUpdate(userId, {$push: { favorites: favoritePark }}, {new: true});
+        res.send(updatedUser.favorites);
     } catch(error) {
         res
             .status(400)
