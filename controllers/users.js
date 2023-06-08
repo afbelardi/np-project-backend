@@ -130,9 +130,6 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
                 {new: true});
             res.send(updatedUser.favorites);
         }
-
-        
-        
     } catch(error) {
         res
             .status(400)
@@ -148,11 +145,11 @@ userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
         
         const updatedUser = await User.findOneAndUpdate(
             { _id: userId},
-            {$pull: { favorites: { parkCode: parkCode }}},
+            { $pull: { favorites: { parkCode: parkCode }}},
             { new: true }
         )
 
-        res.send(updateUser.favorites)
+        res.send(updatedUser.favorites)
     }catch (error) {
 
     }
@@ -163,9 +160,7 @@ userRouter.get('/favorites/:id', authenticateToken, async(req, res) => {
     try {
         const userId = req.params.id;
         const foundUser = await User.findById(userId).populate('favorites')
-        // const token = req.headers.authorization.split(' ')[1]
-        // const decodedToken = await jwt.decode(token, process.env.JWT_SECRET)
-        // const foundUser = await User.findById(decodedToken.id).populate("favorites")
+        
         res.json(foundUser.favorites)
     } catch(error){
         res
