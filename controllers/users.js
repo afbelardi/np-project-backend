@@ -114,13 +114,47 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
             designation: parkData.designation
         };
 
+        const user = await User.findById(userId);
+
+        const existingPark = user.favorites.find(
+            (park) => park.parkCode === parkCode
+        );
+        if (existingPark) {
+            res
+            .status(400)
+            .send('This park has already been favorited');
+        } else {
+            const updatedUser = await User.findByIdAndUpdate(
+                userId, 
+                {$push: { favorites: favoritePark }},
+                {new: true});
+            res.send(updatedUser.favorites);
+        }
+
         
-        const updatedUser = await User.findByIdAndUpdate(userId, {$push: { favorites: favoritePark }}, {new: true});
-        res.send(updatedUser.favorites);
+        
     } catch(error) {
         res
             .status(400)
             .send(error)
+    }
+});
+
+
+userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const parkCode = await req.body.parkCode;
+        
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId},
+            {$pull: { favorites: { parkCode: parkCode }}},
+            { new: true }
+        )
+
+        res.send(updateUser.favorites)
+    }catch (error) {
+
     }
 })
 
