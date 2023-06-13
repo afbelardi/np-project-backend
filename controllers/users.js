@@ -52,11 +52,11 @@ userRouter.post('/login', async (req, res, next) => {
             res.status(401).json({ message: 'Password is incorrect. '});
             return;
         }
-        const expirationTime = Math.floor(Date.now() / 1000) + 60;
+        // const expirationTime = Math.floor(Date.now() / 1000) + 60;
 
         const payload = {
             userId: user._id,
-            exp: expirationTime
+            // exp: expirationTime
         }
         const token = jwt.sign(payload, secret_key);
         res.status(200).json({ token, user });
