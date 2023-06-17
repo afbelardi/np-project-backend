@@ -1,8 +1,6 @@
 const User = require('../models/User');
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const express = require("express");
-const Park = require('../models/Park');
 const { default: axios } = require('axios');
 const userRouter = express.Router();
 

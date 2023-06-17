@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Park = require("./Park");
 const bcrypt = require('bcrypt');
 
 const userSchema = mongoose.Schema({
