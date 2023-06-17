@@ -1,13 +1,13 @@
-const { Schema, model } = require('mongoose');
+// const { Schema, model } = require('mongoose');
 
-//create our Schema 
+// //create our Schema 
 
-const noteSchema = new Schema({
-    note: String,
-})
+// const noteSchema = new Schema({
+//     note: String,
+// })
 
-//model
+// //model
 
-const Note = model('Note', noteSchema)
+// const Note = model('Note', noteSchema)
 
-module.exports = Note;
+// module.exports = Note;

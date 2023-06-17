@@ -37,7 +37,7 @@ app.use(/\.[0-9a-z]+$/i, express.static('public'));
 
 app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerConfig));
 app.use('/api/nationalpark', require('./controllers/parks'));
-app.use('/api/notes', require('./controllers/notes'));
+// app.use('/api/notes', require('./controllers/notes'));
 app.use('/api/users', require('./controllers/users'));
 
 
