@@ -1,24 +1,65 @@
 {
-    "openapi": "3.0.0",
+    "swagger": "2.0",
     "info": {
       "title": "National Parks Finder API",
       "version": "1.0.0",
       "description": "The documentation for the National Parks Finder API"
     },
-    "servers": [
-      {
-        "url": "http://localhost:8000" 
-      }
+    "contact": {
+        "email": "afbelardicode@gmail.com"
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "$ref": "./models.User.js#/defintions/User"
+            }
+        }
+    },
+    "host": "np-backend.herokuapp.com/",
+    "basePath": "/api",
+    "schemes": [
+        "https"
+    ],
+    "tags": [
+        {
+            "name": "users",
+            "description": "All info for each user"
+        },
+        {
+            "name": "parks",
+            "description": "Retrieve parks information"
+        }
     ],
     "paths": {
-      "/api/users": {
-        "get": {
-          "summary": "Get all users",
+      "/users/signup": {
+        "post": {
+        "tags": [
+            "users"
+        ],
+          "summary": "Sign up for an account",
           "responses": {
-            "200": {
-              "description": "OK"
+            "201": {
+              "description": "User created successfully"
+            },
+            "400": {
+                "description": "Issue creating account. Not successful"
             }
-          }
+
+          },
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+                "in": "body",
+                "name": "body",
+                "description": "User object that gets added to database to create an account",
+                "required": true,
+                "schema": {
+                    "$ref": "#/components/schema/User"
+                }
+            }
+          ]
         }
       }
   
