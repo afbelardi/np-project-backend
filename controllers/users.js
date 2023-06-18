@@ -51,8 +51,9 @@ userRouter.post('/signup', async (req, res, next) => {
 userRouter.post('/login', async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const userEmail = email.toLowerCase();
-        const user = await User.findOne({ userEmail })
+        const fixedEmail = email.toLowerCase();
+
+        const user = await User.findOne({ email: fixedEmail})
         if (!user) {
             res.status(401).json({ message: 'Email is incorrect. '});
             return;

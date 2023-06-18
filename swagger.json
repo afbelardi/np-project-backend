@@ -73,7 +73,7 @@
               "required": true,
               "example": {
                   "email": "exampleUser@example.com",
-                  "password": "examplePassword"
+                  "password": "examplepassword"
               }
             }
           ]
