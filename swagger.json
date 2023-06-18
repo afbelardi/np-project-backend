@@ -21,6 +21,8 @@
       "description": "Retrieve parks information"
     }
   ],
+
+
   "paths": {
     "/users/signup": {
       "post": {
@@ -49,7 +51,34 @@
           }
         ]
       }
-    }
+    },
+    "/users/login": {
+        "post": {
+          "tags": ["users"],
+          "summary": "Log into user account",
+          "responses": {
+            "200": {
+              "description": "Log in successful"
+            },
+            "400": {
+              "description": "Issue logging in"
+            }
+          },
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "User object for logging into account",
+              "required": true,
+              "example": {
+                  "email": "exampleUser@example.com",
+                  "password": "examplePassword"
+              }
+            }
+          ]
+        }
+      }
   },
   "definitions": {
     "User": {
@@ -64,7 +93,13 @@
         },
         "password": {
           "type": "string"
-        }
+        },
+        "favorites": [{
+            "parkCode": {
+                "type": "string"
+            }
+        }]
+        
       }
     }
   }

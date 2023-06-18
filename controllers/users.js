@@ -25,11 +25,21 @@ const authenticateToken = (req, res, next) => {
 userRouter.post('/signup', async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
+
+        const exisitingUser = await User.findOne({
+            $or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }]
+        })
+
+        if (exisitingUser) {
+            res.status(400).json({ message: 'Username or email already exists'})
+        }
+
         const user = new User({ 
             username: username.toLowerCase(),
             email: email.toLowerCase(), 
             password
         });
+        
         await user.save();
         res.status(201).json({message: 'User created successfully'})
     } catch(error) {
@@ -61,6 +71,7 @@ userRouter.post('/login', async (req, res, next) => {
         res.status(200).json({ token, user });
     } catch (error) {
         next(error);
+        res.status(401).json({ message: 'Login failed'})
     }
 });
 
