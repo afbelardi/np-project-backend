@@ -46,7 +46,7 @@
             "example": {
                 "username": "exampleUser",
                 "password": "examplePassword",
-                "email": "example@example.com"
+                "email": "exampleUser@example.com"
             }
           }
         ]
@@ -73,7 +73,7 @@
               "required": true,
               "example": {
                   "email": "exampleUser@example.com",
-                  "password": "examplepassword"
+                  "password": "examplePassword"
               }
             }
           ]
