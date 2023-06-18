@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc')
 const swaggerConfig = require('./swagger.json');
 
 app.use(cors());
