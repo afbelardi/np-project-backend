@@ -32,16 +32,16 @@ userRouter.post('/signup', async (req, res, next) => {
 
         if (exisitingUser) {
             res.status(400).json({ message: 'Username or email already exists'})
+        } else {
+            const user = new User({ 
+                username: username.toLowerCase(),
+                email: email.toLowerCase(), 
+                password
+            });
+            
+            await user.save();
+            res.status(201).json({message: 'User created successfully'})
         }
-
-        const user = new User({ 
-            username: username.toLowerCase(),
-            email: email.toLowerCase(), 
-            password
-        });
-        
-        await user.save();
-        res.status(201).json({message: 'User created successfully'})
     } catch(error) {
         next(error);
         res.status(400);
