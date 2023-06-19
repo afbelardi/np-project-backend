@@ -26,10 +26,8 @@ userRouter.post('/signup', async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
-        const lowerCaseUser = username.toLowerCase();
-        const lowerCaseEmail = email.toLowerCase();
         const exisitingUser = await User.findOne({
-            $or: [{ username: lowerCaseUser }, { email: lowerCaseEmail }]
+            $or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }]
         })
 
         if (exisitingUser) {
@@ -55,7 +53,8 @@ userRouter.post('/login', async (req, res, next) => {
         const { email, password } = req.body;
         const fixedEmail = email.toLowerCase();
 
-        const user = await User.findOne({ email: fixedEmail})
+        const user = await User.findOne({ email })
+        
         if (!user) {
             res.status(401).json({ message: 'Email is incorrect. '});
             return;

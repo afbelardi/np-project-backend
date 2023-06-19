@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "title": "National Parks Finder API",
     "version": "1.0.0",
@@ -8,12 +8,9 @@
   "contact": {
     "email": "afbelardicode@gmail.com"
   },
-  "servers": [
-    {
-    "url": "https://np-backend.herokuapp.com/api"
-    }
-  ],
-  "scheme": "https",
+  "host": "np-backend.herokuapp.com",
+  "basePath": "/api",
+  "schemes": ["https"],
   "tags": [
     {
       "name": "users",
@@ -55,8 +52,7 @@
                 "email": "exampleUser@example.com"
             }
           }
-        ],
-        "basePath": "/users/signup"
+        ]
       }
     },
 
@@ -86,13 +82,7 @@
                   "password": "examplePassword"
               }
             }
-          ],
-          "servers": [
-            {
-              "url": "/"
-            }
-          ],
-          "basePath": "/api/users/login"
+          ]
         }
       },
 
@@ -102,7 +92,7 @@
           "summary": "Obtain one user",
           "security": [ 
             {
-            "bearerAuth": []
+            "BearerAuth": []
             }
         ],
           "responses": {
@@ -124,18 +114,19 @@
             }
           ]
         }
-      }
+      },
 
 
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+
+      "securityDefinitions": {
+        "BearerAuth": {
+          "type": "bearer",
+          "name": "Authorization",
+          "in": "header",
+          "description": "Bearer Token"
+        }
       }
-    }
+
   },
   "definitions": {
     "User": {
