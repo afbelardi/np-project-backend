@@ -23,17 +23,12 @@
   ],
   "securityDefinitions": {
     "BearerAuth": {
-      "type": "bearer",
+      "type": "apiKey",
       "name": "Authorization",
       "in": "header",
       "description": "Bearer Token"
     }
   },
-  "security": [
-    {
-      "BearerAuth": []
-    }
-  ],
 
 
   "paths": {
@@ -103,7 +98,7 @@
         "get": {
           "tags": ["users"],
           "summary": "Obtain one user",
-          "security": [{"Bearer": []}],
+          "security": [{"BearerAuth": []}],
           "responses": {
             "200": {
               "description": "User successfully returned"
@@ -112,7 +107,6 @@
               "description": "Issue getting user"
             }
           },
-          "consumes": ["application/json"],
           "parameters": [
             {
               "in": "path",
