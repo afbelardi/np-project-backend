@@ -117,7 +117,186 @@
             }
           ]
         }
+      },
+
+        "/users/favorites/{userId}": {
+          "put": {
+            "tags": ["users"],
+            "summary": "Get the favorite parks for a specific user",
+            "security": [{"BearerAuth": []}],
+            "responses": {
+              "200": {
+                "description": "Park added to favorites"
+              },
+              "400": {
+                "description": "Park cannot be added"
+              }
+            },
+            "consumes": ["application/json"],
+            "parameters": [
+              {
+                "in": "body",
+                "name": "body",
+                "description": "Park object to add to the favorites array",
+                "required": true,
+                "example": {
+                   "parkCode": "ebla",
+                   "url": "https://www.nps.gov/ebla/index.htm",
+                   "fullName": "Ebey's Landing National Historical Reserve",
+                   "description": "This stunning landscape on the Salish Sea, with its rich farmland and promising seaport, lured the earliest American pioneers north of the Columbia River to Ebey’s Landing. Today Ebey’s Landing National Historical Reserve preserves the historical, agricultural and cultural traditions of both Native and Euro-American – while offering spectacular opportunities for recreation.",
+                   "latitude": "48.21403036",
+                   "longitude": "-122.6877213",
+                   "activities": [
+                    {
+                        "id": "13A57703-BB1A-41A2-94B8-53B692EB7238",
+                        "name": "Astronomy"
+                    },
+                    {
+                        "id": "D37A0003-8317-4F04-8FB0-4CF0A272E195",
+                        "name": "Stargazing"
+                    },
+                    {
+                        "id": "7CE6E935-F839-4FEC-A63E-052B1DEF39D2",
+                        "name": "Biking"
+                    },
+                    {
+                        "id": "299CB934-88DC-474F-A33D-E43E29A149C2",
+                        "name": "Mountain Biking"
+                    },
+                    {
+                        "id": "8D778629-F603-4C50-A121-6F4BB2FE2C4B",
+                        "name": "Road Biking"
+                    },
+                    {
+                        "id": "071BA73C-1D3C-46D4-A53C-00D5602F7F0E",
+                        "name": "Boating"
+                    },
+                    {
+                        "id": "BB0B8CD0-BF4C-4517-9980-CFE2D149C7B4",
+                        "name": "Sailing"
+                    },
+                    {
+                        "id": "A59947B7-3376-49B4-AD02-C0423E08C5F7",
+                        "name": "Camping"
+                    },
+                    {
+                        "id": "9159DF0F-951D-4AAE-9987-CEB3CE2A9ADA",
+                        "name": "Car or Front Country Camping"
+                    },
+                    {
+                        "id": "7CFF5F03-5ECC-4F5A-8572-75D1F0976C0C",
+                        "name": "Group Camping"
+                    },
+                    {
+                        "id": "AE42B46C-E4B7-4889-A122-08FE180371AE",
+                        "name": "Fishing"
+                    },
+                    {
+                        "id": "17411C8D-5769-4D0F-ABD1-52ED03840C18",
+                        "name": "Saltwater Fishing"
+                    },
+                    {
+                        "id": "1DFACD97-1B9C-4F5A-80F2-05593604799E",
+                        "name": "Food"
+                    },
+                    {
+                        "id": "E53E1320-9B17-41DC-86A5-37EB7D622572",
+                        "name": "Dining"
+                    },
+                    {
+                        "id": "C6D3230A-2CEA-4AFE-BFF3-DC1E2C2C4BB4",
+                        "name": "Picnicking"
+                    },
+                    {
+                        "id": "B33DC9B6-0B7D-4322-BAD7-A13A34C584A3",
+                        "name": "Guided Tours"
+                    },
+                    {
+                        "id": "A0631906-9672-4583-91DE-113B93DB6B6E",
+                        "name": "Self-Guided Tours - Walking"
+                    },
+                    {
+                        "id": "C7D5A145-F8EB-4C37-9E92-2F6C6206B196",
+                        "name": "Self-Guided Tours - Auto"
+                    },
+                    {
+                        "id": "BFF8C027-7C8F-480B-A5F8-CD8CE490BFBA",
+                        "name": "Hiking"
+                    },
+                    {
+                        "id": "45261C0A-00D8-4C27-A1F8-029F933A0D34",
+                        "name": "Front-Country Hiking"
+                    },
+                    {
+                        "id": "0307955A-B65C-4CE4-A780-EB36BAAADF0B",
+                        "name": "Horse Trekking"
+                    },
+                    {
+                        "id": "1886DA47-0AEC-4568-B9C2-8E9BC316AAAC",
+                        "name": "Horseback Riding"
+                    },
+                    {
+                        "id": "4D224BCA-C127-408B-AC75-A51563C42411",
+                        "name": "Paddling"
+                    },
+                    {
+                        "id": "21DB3AFC-8AAC-4665-BC1F-7198C0685983",
+                        "name": "Canoeing"
+                    },
+                    {
+                        "id": "256543C7-4322-48B3-8978-765E89AA9431",
+                        "name": "Canoe or Kayak Camping"
+                    },
+                    {
+                        "id": "F353A9ED-4A08-456E-8DEC-E61974D0FEB6",
+                        "name": "Kayaking"
+                    },
+                    {
+                        "id": "B3EF12AF-D951-419E-BD3C-6B36CBCC1E16",
+                        "name": "Stand Up Paddleboarding"
+                    },
+                    {
+                        "id": "DF4A35E0-7983-4A3E-BC47-F37B872B0F25",
+                        "name": "Junior Ranger Program"
+                    },
+                    {
+                        "id": "42CF4021-8524-428E-866A-D33097A4A764",
+                        "name": "SCUBA Diving"
+                    },
+                    {
+                        "id": "0B685688-3405-4E2A-ABBA-E3069492EC50",
+                        "name": "Wildlife Watching"
+                    },
+                    {
+                        "id": "5A2C91D1-50EC-4B24-8BED-A2E11A1892DF",
+                        "name": "Birdwatching"
+                    },
+                    {
+                        "id": "C8F98B28-3C10-41AE-AA99-092B3B398C43",
+                        "name": "Museum Exhibits"
+                    },
+                    {
+                        "id": "24380E3F-AD9D-4E38-BF13-C8EEB21893E7",
+                        "name": "Shopping"
+                    }
+                   ]
+                  }
+              },
+              {
+                "in": "path",
+                "name": "userId",
+                "description": "User object for logging into account",
+                "required": true,
+                "type": "string"
+              }
+            ]
+          }
       }
+
+
+
+
+
   },
   "definitions": {
     "User": {
