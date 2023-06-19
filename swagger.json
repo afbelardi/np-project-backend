@@ -21,6 +21,19 @@
       "description": "Retrieve parks information"
     }
   ],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "bearer",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Bearer Token"
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
 
 
   "paths": {
@@ -90,11 +103,7 @@
         "get": {
           "tags": ["users"],
           "summary": "Obtain one user",
-          "security": [ 
-            {
-            "BearerAuth": []
-            }
-        ],
+          "security": [{"Bearer": []}],
           "responses": {
             "200": {
               "description": "User successfully returned"
@@ -114,19 +123,7 @@
             }
           ]
         }
-      },
-
-
-
-      "securityDefinitions": {
-        "BearerAuth": {
-          "type": "bearer",
-          "name": "Authorization",
-          "in": "header",
-          "description": "Bearer Token"
-        }
       }
-
   },
   "definitions": {
     "User": {
@@ -147,7 +144,6 @@
                 "type": "string"
             }
         }]
-        
       }
     }
   }
