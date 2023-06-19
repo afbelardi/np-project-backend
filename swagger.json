@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "National Parks Finder API",
     "version": "1.0.0",
@@ -8,9 +8,12 @@
   "contact": {
     "email": "afbelardicode@gmail.com"
   },
-  "host": "np-backend.herokuapp.com",
-  "basePath": "/api",
-  "schemes": ["https"],
+  "servers": [
+    {
+    "url": "https://np-backend.herokuapp.com/api"
+    }
+  ],
+  "scheme": "https",
   "tags": [
     {
       "name": "users",
@@ -24,6 +27,9 @@
 
 
   "paths": {
+
+
+
     "/users/signup": {
       "post": {
         "tags": ["users"],
@@ -49,9 +55,13 @@
                 "email": "exampleUser@example.com"
             }
           }
-        ]
+        ],
+        "basePath": "/users/signup"
       }
     },
+
+
+
     "/users/login": {
         "post": {
           "tags": ["users"],
@@ -76,9 +86,56 @@
                   "password": "examplePassword"
               }
             }
+          ],
+          "servers": [
+            {
+              "url": "/"
+            }
+          ],
+          "basePath": "/api/users/login"
+        }
+      },
+
+      "/users/{userId}": {
+        "get": {
+          "tags": ["users"],
+          "summary": "Obtain one user",
+          "security": [ 
+            {
+            "bearerAuth": []
+            }
+        ],
+          "responses": {
+            "200": {
+              "description": "User successfully returned"
+            },
+            "400": {
+              "description": "Issue getting user"
+            }
+          },
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "description": "User object for logging into account",
+              "required": true,
+              "type": "string"
+            }
           ]
         }
       }
+
+
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   },
   "definitions": {
     "User": {

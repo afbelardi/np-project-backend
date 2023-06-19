@@ -26,8 +26,10 @@ userRouter.post('/signup', async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
+        const lowerCaseUser = username.toLowerCase();
+        const lowerCaseEmail = email.toLowerCase();
         const exisitingUser = await User.findOne({
-            $or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }]
+            $or: [{ username: lowerCaseUser }, { email: lowerCaseEmail }]
         })
 
         if (exisitingUser) {
