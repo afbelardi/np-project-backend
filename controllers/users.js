@@ -95,6 +95,7 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
 });
 
 
+
 userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
     try {
         const userId = req.params.id;
@@ -114,8 +115,8 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
             longitude: parkData.longitude,
             activities: parkData.activities,
             states: parkData.states,
-            phoneNumbers: parkData.phoneNumbers,
-            emailAddresses: parkData.emailAddresses,
+            phoneNumbers: parkData.contacts.phoneNumbers,
+            emailAddresses: parkData.contacts.emailAddresses,
             entranceFees: parkData.entranceFees,
             entrancePasses: parkData.entrancePasses,
             directionsInfo: parkData.directionsInfo,
@@ -129,6 +130,7 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
 
         const user = await User.findById(userId);
 
+  
         const existingPark = user.favorites.find(
             (park) => park.parkCode === parkCode
         );
@@ -163,7 +165,7 @@ userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
         )
 
         res.send(updatedUser.favorites)
-    }catch (error) {
+    } catch (error) {
 
     }
 })
