@@ -158,15 +158,24 @@ userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
         const userId = req.params.id;
         const parkCode = await req.body.parkCode;
         
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: userId},
-            { $pull: { favorites: { parkCode: parkCode }}},
-            { new: true }
-        )
+        const user = await User.findById(userId);
 
-        res.send(updatedUser.favorites)
+        const existingPark = user.favorites.find(
+            (park) => park.parkCode === parkCode
+        );
+
+        if (!existingPark) {
+            res.status(400).json({ message: "That park does not exist in this user's favorites"})
+        } else {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: userId},
+                { $pull: { favorites: { parkCode: parkCode }}},
+                { new: true }
+            )
+            res.send(updatedUser.favorites)
+        }
     } catch (error) {
-
+        console.error(error)
     }
 })
 
