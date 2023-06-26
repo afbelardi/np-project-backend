@@ -6,6 +6,9 @@ const userRouter = express.Router();
 
 const secret_key = process.env.JWT_SECRET;
 
+
+// MIDDLEWARE
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -29,6 +32,12 @@ const authenticateUser = (req, res, next) => {
     }
     next();
 }
+
+
+
+//
+
+
 
 // USER SIGNUP
 
@@ -66,6 +75,11 @@ userRouter.post("/signup", async (req, res, next) => {
   }
 });
 
+
+
+
+
+
 // USER LOGIN 
 
 userRouter.post("/login", async (req, res, next) => {
@@ -96,6 +110,11 @@ userRouter.post("/login", async (req, res, next) => {
   }
 });
 
+
+
+
+
+
 //GET A USER BY THEIR ID 
 
 userRouter.get("/:id", authenticateToken, authenticateUser, async (req, res) => {
@@ -124,7 +143,10 @@ userRouter.delete("/:id", authenticateToken, authenticateUser, async (req, res) 
     } catch (error) {
         res.status(400).send(error)
     }
-})
+});
+
+
+
  
 
 // DELETE A USER'S FAVORITE PARK
@@ -158,6 +180,10 @@ userRouter.delete("/favorites/:id", authenticateToken, authenticateUser, async (
     console.error(error);
   }
 });
+
+
+
+
 
 // ADD TO A USER'S FAVORITE PARKS
 
@@ -213,6 +239,9 @@ userRouter.put("/favorites/:id", authenticateToken, authenticateUser, async (req
     res.status(400).send(error);
   }
 });
+
+
+
 
 // GET ALL FAVORITE PARKS OF A SPECIFIC USER 
 
