@@ -21,10 +21,13 @@ const authenticateToken = (req, res, next) => {
 };
 
 const authenticateUser = (req, res, next) => {
-    const authenticatedUser = req.user.id;
+    const authenticatedUser = req.user.userId;
+    const userId = req.params.id;
+
     if (authenticatedUser !== userId) {
-        res.status(403).json({ message: "Forbidden" })
+        return res.status(403).json({ message: "Forbidden" })
     }
+    next();
 }
 
 // USER SIGNUP
@@ -95,7 +98,7 @@ userRouter.post("/login", async (req, res, next) => {
 
 //GET A USER BY THEIR ID 
 
-userRouter.get("/:id", authenticateToken, async (req, res) => {
+userRouter.get("/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findOne({ _id: userId }, { password: 0 })
@@ -126,7 +129,7 @@ userRouter.delete("/:id", authenticateToken, authenticateUser, async (req, res) 
 
 // DELETE A USER'S FAVORITE PARK
 
-userRouter.delete("/favorites/:id", authenticateToken, async (req, res) => {
+userRouter.delete("/favorites/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const parkCode = await req.body.parkCode;
@@ -158,7 +161,7 @@ userRouter.delete("/favorites/:id", authenticateToken, async (req, res) => {
 
 // ADD TO A USER'S FAVORITE PARKS
 
-userRouter.put("/favorites/:id", authenticateToken, async (req, res, next) => {
+userRouter.put("/favorites/:id", authenticateToken, authenticateUser, async (req, res, next) => {
   try {
     const userId = req.params.id;
     const parkCode = await req.body.parkCode;
@@ -213,7 +216,7 @@ userRouter.put("/favorites/:id", authenticateToken, async (req, res, next) => {
 
 // GET ALL FAVORITE PARKS OF A SPECIFIC USER 
 
-userRouter.get("/favorites/:id", authenticateToken, async (req, res) => {
+userRouter.get("/favorites/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const foundUser = await User.findById(userId).populate("favorites");
