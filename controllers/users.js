@@ -17,6 +17,7 @@ const authenticateToken = (req, res, next) => {
             return res.status(403).json({ message: 'Forbidden' });
         }
         req.user = user;
+        
         next();
     })
 }
@@ -65,7 +66,7 @@ userRouter.post('/login', async (req, res, next) => {
             return;
         }
         // const expirationTime = Math.floor(Date.now() / 1000) + 60;
-
+      
         const payload = {
             userId: user._id,
             // exp: expirationTime
@@ -94,6 +95,35 @@ userRouter.get('/:id', authenticateToken, async (req, res, next) => {
     }
 });
 
+userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const parkCode = await req.body.parkCode;
+        const authenticatedUser = req.user.userId
+        const user = await User.findById(userId);
+
+        const existingPark = user.favorites.find(
+            (park) => park.parkCode === parkCode
+        );
+        
+        if (authenticatedUser !== userId) {
+            res.status(403).json({ message: "Forbidden" })
+        } else if (!existingPark) {
+            res.status(400).json({ message: "That park does not exist in this user's favorites"})
+        } else {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: userId},
+                { $pull: { favorites: { parkCode: parkCode }}},
+                { new: true }
+            )
+            res.send(updatedUser.favorites)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+
 
 
 userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
@@ -104,8 +134,8 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
 
         const parkRes = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=${apikey}`);
         const parkData = parkRes.data.data[0];
+
        
-     
         const favoritePark = {
             parkCode: parkCode,
             url: parkData.url,
@@ -153,31 +183,7 @@ userRouter.put('/favorites/:id', authenticateToken, async (req, res, next) => {
 });
 
 
-userRouter.delete('/favorites/:id', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.params.id;
-        const parkCode = await req.body.parkCode;
-        
-        const user = await User.findById(userId);
 
-        const existingPark = user.favorites.find(
-            (park) => park.parkCode === parkCode
-        );
-
-        if (!existingPark) {
-            res.status(400).json({ message: "That park does not exist in this user's favorites"})
-        } else {
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: userId},
-                { $pull: { favorites: { parkCode: parkCode }}},
-                { new: true }
-            )
-            res.send(updatedUser.favorites)
-        }
-    } catch (error) {
-        console.error(error)
-    }
-})
 
 
 userRouter.get('/favorites/:id', authenticateToken, async(req, res) => {
