@@ -6,6 +6,9 @@ const userRouter = express.Router();
 
 const secret_key = process.env.JWT_SECRET;
 
+
+// MIDDLEWARE
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -20,18 +23,39 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const authenticateUser = (req, res, next) => {
+    const authenticatedUser = req.user.userId;
+    const userId = req.params.id;
+
+    if (authenticatedUser !== userId) {
+        return res.status(403).json({ message: "Forbidden" })
+    }
+    next();
+}
+
+
+
+//
+
+
+
 // USER SIGNUP
 
 userRouter.post("/signup", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: "Please provide username, email, and password" });
+      }
+
     const exisitingUser = await User.findOne({
-      $or: [
-        { username: username.toLowerCase() },
-        { email: email.toLowerCase() },
-      ],
-    });
+        $or: [
+          { username: username.toLowerCase() },
+          { email: email.toLowerCase() },
+        ],
+      });
+   
 
     if (exisitingUser) {
       res.status(400).json({ message: "Username or email already exists" });
@@ -50,6 +74,11 @@ userRouter.post("/signup", async (req, res, next) => {
     res.status(400).send(error);
   }
 });
+
+
+
+
+
 
 // USER LOGIN 
 
@@ -81,9 +110,14 @@ userRouter.post("/login", async (req, res, next) => {
   }
 });
 
+
+
+
+
+
 //GET A USER BY THEIR ID 
 
-userRouter.get("/:id", authenticateToken, async (req, res) => {
+userRouter.get("/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findOne({ _id: userId }, { password: 0 })
@@ -100,26 +134,24 @@ userRouter.get("/:id", authenticateToken, async (req, res) => {
 
 // DELETE A USER BY THEIR ID
 
-userRouter.delete("/:id", authenticateToken, async (req, res) => {
+userRouter.delete("/:id", authenticateToken, authenticateUser, async (req, res) => {
     try {
         const userId = req.params.id;
-        const authenticatedUser = req.user.userId;
-     
-        if (authenticatedUser !== userId) {
-            res.status(403).json({ message: "Forbidden" })
-        } else {
+
             const result = await User.findByIdAndDelete(userId);
             res.json(result)
-        }
     } catch (error) {
         res.status(400).send(error)
     }
-})
+});
+
+
+
  
 
 // DELETE A USER'S FAVORITE PARK
 
-userRouter.delete("/favorites/:id", authenticateToken, async (req, res) => {
+userRouter.delete("/favorites/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const parkCode = await req.body.parkCode;
@@ -149,9 +181,13 @@ userRouter.delete("/favorites/:id", authenticateToken, async (req, res) => {
   }
 });
 
+
+
+
+
 // ADD TO A USER'S FAVORITE PARKS
 
-userRouter.put("/favorites/:id", authenticateToken, async (req, res, next) => {
+userRouter.put("/favorites/:id", authenticateToken, authenticateUser, async (req, res, next) => {
   try {
     const userId = req.params.id;
     const parkCode = await req.body.parkCode;
@@ -204,9 +240,12 @@ userRouter.put("/favorites/:id", authenticateToken, async (req, res, next) => {
   }
 });
 
+
+
+
 // GET ALL FAVORITE PARKS OF A SPECIFIC USER 
 
-userRouter.get("/favorites/:id", authenticateToken, async (req, res) => {
+userRouter.get("/favorites/:id", authenticateToken, authenticateUser, async (req, res) => {
   try {
     const userId = req.params.id;
     const foundUser = await User.findById(userId).populate("favorites");
