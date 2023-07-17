@@ -43,6 +43,22 @@ parkRouter.get('/apikey/:park', async (req, res) => {
     } catch(error) {
         console.error(error)
     }
+});
+
+
+parkRouter.get('/activity/:id', async (req, res) => {
+    try {
+        const apikey = process.env.PARKS_API_KEY;
+        const activity = req.params.id;
+        if (!activity) {
+            res.send('No activity provided') 
+        } else {
+            const response = await axios.get(`https://developer.nps.gov/api/v1/activities/parks?q=${activity}&api_key=${apikey}`);
+            res.send(response.data);
+        }
+    } catch (error) {
+        res.send(error)
+    }
 })
 
 
