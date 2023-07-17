@@ -132,6 +132,9 @@ userRouter.get("/:id", authenticateToken, authenticateUser, async (req, res) => 
   }
 });
 
+
+
+
 // DELETE A USER BY THEIR ID
 
 userRouter.delete("/:id", authenticateToken, authenticateUser, async (req, res) => {
@@ -155,17 +158,14 @@ userRouter.delete("/favorites/:id", authenticateToken, authenticateUser, async (
   try {
     const userId = req.params.id;
     const parkCode = await req.body.parkCode;
-    const authenticatedUser = req.user.userId;
     const user = await User.findById(userId);
 
     const existingPark = user.favorites.find(
       (park) => park.parkCode === parkCode
     );
 
-    if (authenticatedUser !== userId) {
-      res.status(403).json({ message: "Forbidden" });
-    } else if (!existingPark) {
-      res
+    if (!existingPark) {
+      return res
         .status(400)
         .json({ message: "That park does not exist in this user's favorites" });
     } else {
